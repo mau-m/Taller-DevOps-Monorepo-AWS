@@ -1,0 +1,40 @@
+name: Feature Branch Tests
+
+on:
+  push:
+    branches:
+      - 'feature/*'
+  pull_request:
+    branches:
+      - 'main'
+
+jobs:
+
+  backend-tests:
+    name: Backend Unit Tests
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./frontend
+
+    steps:
+      - name: Descargar el código del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+          cache: 'pip'
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest httpx  # Aseguramos que pytest esté disponible (requerido para FastAPI)
+
+      - name: Ejecutar los tests
+        env:
+          SECRET_KEY: "test_secret_key"
+        run: pytest tests/
