@@ -118,15 +118,8 @@ jobs:
       
       - name: Preparar artefacto de CodeDeploy
         run: |
-          # Empaqueta los archivos de despliegue en la raíz del .zip
-          rm -rf bundle deploy.zip
-          mkdir -p bundle
-          cp .app-version docker-compose.yaml bundle/
-          cp -r scripts bundle/
-          (
-            cd bundle
-            zip -r ../deploy.zip .
-          )
+          echo "${{ github.ref_name }}" > .app-version
+          zip -r deploy.zip appspec.yml docker-compose.yml .app-version scripts/
       
       - name: Subir artefacto a S3
         run: |
