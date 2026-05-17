@@ -113,17 +113,21 @@ jobs:
 
       - name: Escribir la versión en el artefacto
         run: |
-          # El despliegue siempre consume la imagen latest publicada por build.yml
           echo "latest" > .app-version
-      
-      - name: Preparar artefacto de CodeDeploy
+
+      - name: Verificar estructura
         run: |
-          echo "${{ github.ref_name }}" > .app-version
-          zip -r deploy.zip appspec.yml docker-compose.yml .app-version scripts/
-      
-      - name: Subir artefacto a S3
+          echo "--- Raíz ---"
+          ls -la
+          echo "--- Scripts ---"
+          ls scripts/
+
+      - name: Empaquetar y subir a S3
         run: |
-          aws s3 cp deploy.zip s3://${{ vars.S3_BUCKET }}/releases/${{ github.ref_name }}.zip
+          aws deploy push \
+            --application-name ${{ vars.CODEDEPLOY_APP }} \
+            --s3-location s3://${{ vars.S3_BUCKET }}/releases/${{ github.ref_name }}.zip \
+            --source .
 
       - name: Crear deployment en CodeDeploy
         run: |
