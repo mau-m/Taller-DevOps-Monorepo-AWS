@@ -118,10 +118,10 @@ jobs:
       
       - name: Preparar artefacto de CodeDeploy
         run: |
-          # Empaqueta con appspec.yml en la raíz del .zip (requerido por CodeDeploy)
+          # Empaqueta los archivos de despliegue en la raíz del .zip
           rm -rf bundle deploy.zip
           mkdir -p bundle
-          cp appspec.yml .app-version docker-compose.yml bundle/
+          cp .app-version docker-compose.yaml bundle/
           cp -r scripts bundle/
           (
             cd bundle
