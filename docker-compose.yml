@@ -1,7 +1,7 @@
 services:
   backend:
-    build: ./backend
-    image: taller-devops-backend:alpine
+    container_name: backend
+    image: 157611948522.dkr.ecr.us-east-1.amazonaws.com/calculadora/backend:latest
     expose:
       - "8000"
     networks:
@@ -16,8 +16,8 @@ services:
       retries: 3
 
   frontend:
-    build: ./frontend
-    image: taller-devops-frontend:alpine
+    container_name: frontend
+    image: 157611948522.dkr.ecr.us-east-1.amazonaws.com/calculadora/frontend:latest
     ports:
       - "3000:8080"
     depends_on:
