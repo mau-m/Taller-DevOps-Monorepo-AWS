@@ -121,7 +121,7 @@ jobs:
           # Empaqueta con appspec.yml en la raíz del .zip (requerido por CodeDeploy)
           rm -rf bundle deploy.zip
           mkdir -p bundle
-          cp appspec.yml .app-version docker-compose-aws.yml bundle/
+          cp appspec.yml .app-version docker-compose.yml bundle/
           cp -r scripts bundle/
           (
             cd bundle
